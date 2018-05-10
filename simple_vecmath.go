@@ -600,12 +600,10 @@ func (m *Matrix4) Invert() *Matrix4 {
 	zx := m.zx; zy := m.zy; zz := m.zz; zw := m.zw
 	wx := m.wx; wy := m.wy; wz := m.wz; ww := m.ww
 
-	tmp:= NewMatrix3(0,0,0,0,0,0,0,0,0)
+	//TODO: hardcode the determinant math so I can get rid of this temporary matrix. Sooo much typing... 
+	tmp:= NewMatrix3(0,0,0,0,0,0,0,0,0) 
 	
-	//diagonal1 := m.xx*m.yy*m.zz + m.xy*m.yz*m.zx + m.xz*m.yx*m.zy
-	//diagonal2 := -m.zx*m.yy*m.xz - m.zy*m.yz*m.xx - m.zz*m.yx*m.xy
-
-	m.xx = yy*zz*wz + yz*zw*wy + yw*zy*wz - wy*zz*yw - wz*zw*yy - ww*zy*yz  //tmp.Set(yy,yz,yw,zy,zz,zw,wy,wz,ww).Determinant()
+	m.xx = tmp.Set(yy,yz,yw,zy,zz,zw,wy,wz,ww).Determinant()
 	m.xy = -tmp.Set(yx,yz,yw,zx,zz,zw,wx,wz,ww).Determinant()
 	m.xz = tmp.Set(yx,yy,yw,zx,zy,zw,wx,wy,ww).Determinant()
 	m.xw = -tmp.Set(yx,yy,yz,zx,zy,zz,wx,wy,wz).Determinant()
